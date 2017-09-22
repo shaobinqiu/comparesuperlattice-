@@ -1,5 +1,5 @@
 clear
-deta_V=0.01;%the area difference between substrate and B layer
+deta_V=0.03;%the area difference between substrate and B layer
 deta_L=1e-2;%the Lattice difference between substrate and B layer   (^2)
 lattice_B=[6.0571999999999999    0.0000000000000000     0.0000000000000000    
     0.4660000000000000    8.8773999999999997    0.0000000000000000    
@@ -39,36 +39,36 @@ valum_Ag=[abs(det(lattice_Ag(1:2,1:2))) 100
  end
  U=[];
  number=1;%the number of suitable structures
-%  for kk=1:5%size(ratio,1)
-%      kk
-%      direction_B=['/home/qiusb/Projects/runaba/find_superL_Ag/B_',int2str(ratio(kk,1)),'s/B_',int2str(ratio(kk,1)),'s/SUPLAT_B_',int2str(ratio(kk,1)),'s_',int2str(ratio(kk,3)),'/'];
-%      fileFolder_B=fullfile(direction_B);
-%      dirOutput_B=dir(fullfile(fileFolder_B,'*'));%get the filename in direction
-%      direction_Ag=['/home/qiusb/Projects/runaba/find_superL_Ag/Ag',int2str(ratio(kk,2)),'/Ag_',int2str(ratio(kk,2)),'/SUPLAT_Ag_',int2str(ratio(kk,2)),'_',int2str(ratio(kk,4)),'/'];
-%      fileFolder_Ag=fullfile(direction_Ag);
-%      dirOutput_Ag=dir(fullfile(fileFolder_Ag,'*'));%get the filename in direction
-%      
-%      for ll=3:size(dirOutput_B,1)
-%          message_B=import_poscar([direction_B,dirOutput_B(ll).name]);
-%          lattice_B=message_B.lattice;
-%          for pp=3:size(dirOutput_Ag,1)
-%              message_Ag=import_poscar([direction_Ag,dirOutput_Ag(pp).name]);
-%              lattice_Ag=message_Ag.lattice;
-%              u=lattice_Ag/lattice_B;
-%              dif =u-round(u);
-%              if dif(1,1)^2<deta_L  && dif(1,2)^2<deta_L  &&  dif(1,3)^2<deta_L  &&  dif(2,1)^2<deta_L  &&  dif(2,2)^2<deta_L  &&  dif(2,3)^2<deta_L  &&  dif(3,1)^2<deta_L  &&  dif(3,2)^2<deta_L  &&  dif(3,3)^2<deta_L   &&  abs((sum(u(1,:).^2))-1)<deta_L  &&  abs((sum(u(2,:).^2))-1)<deta_L  &&  abs((sum(u(3,:).^2))-1)<deta_L  ; 
-%                  U=[U;u];
-%                  filedirname=['/home/qiusb/Projects/runaba/find_superL_Ag/suitablestructers/','collection_B',int2str(ratio(kk,1)),'s_Ag',int2str(ratio(kk,2)),'_',int2str(number)];
-%                  mkdir(filedirname );
-%                  copyfile([direction_B,dirOutput_B(ll).name],  filedirname);
-%                  copyfile([direction_Ag,dirOutput_Ag(pp).name], filedirname);
-%                  number=number+1;
-%              end
-%              
-%              
-%          end
-%      end
-%  end
+ for kk=1:size(ratio,1)
+     kk
+     direction_B=['/home/qiusb/Projects/runaba/find_superL_Ag/B_',int2str(ratio(kk,1)),'s/B_',int2str(ratio(kk,1)),'s/SUPLAT_B_',int2str(ratio(kk,1)),'s_',int2str(ratio(kk,3)),'/'];
+     fileFolder_B=fullfile(direction_B);
+     dirOutput_B=dir(fullfile(fileFolder_B,'*'));%get the filename in direction
+     direction_Ag=['/home/qiusb/Projects/runaba/find_superL_Ag/Ag',int2str(ratio(kk,2)),'/Ag_',int2str(ratio(kk,2)),'/SUPLAT_Ag_',int2str(ratio(kk,2)),'_',int2str(ratio(kk,4)),'/'];
+     fileFolder_Ag=fullfile(direction_Ag);
+     dirOutput_Ag=dir(fullfile(fileFolder_Ag,'*'));%get the filename in direction
+     
+     for ll=3:size(dirOutput_B,1)
+         message_B=import_poscar([direction_B,dirOutput_B(ll).name]);
+         lattice_B=message_B.lattice;
+         for pp=3:size(dirOutput_Ag,1)
+             message_Ag=import_poscar([direction_Ag,dirOutput_Ag(pp).name]);
+             lattice_Ag=message_Ag.lattice;
+             u=lattice_Ag/lattice_B;
+             dif =u-round(u);
+             if dif(1,1)^2<deta_L  && dif(1,2)^2<deta_L  &&  dif(1,3)^2<deta_L  &&  dif(2,1)^2<deta_L  &&  dif(2,2)^2<deta_L  &&  dif(2,3)^2<deta_L  &&  dif(3,1)^2<deta_L  &&  dif(3,2)^2<deta_L  &&  dif(3,3)^2<deta_L   &&  abs((sum(u(1,:).^2))-1)<deta_L  &&  abs((sum(u(2,:).^2))-1)<deta_L  &&  abs((sum(u(3,:).^2))-1)<deta_L  ; 
+                 U=[U;u];
+                 filedirname=['/home/qiusb/Projects/runaba/find_superL_Ag/suitablestructers/','collection_B',int2str(ratio(kk,1)),'s_Ag',int2str(ratio(kk,2)),'_',int2str(number)];
+                 mkdir(filedirname );
+                 copyfile([direction_B,dirOutput_B(ll).name],  filedirname);
+                 copyfile([direction_Ag,dirOutput_Ag(pp).name], filedirname);
+                 number=number+1;
+             end
+             
+             
+         end
+     end
+ end
  
  
  
