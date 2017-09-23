@@ -52,7 +52,8 @@ sub_name=['Ag_100';'Ag_110';'Ag_111';'Au_111';'Cu_111'];
  end
  U=[];
  number=1;%the number of suitable structures
- for kk=301:328%size(ratio,1)
+ error=0;
+ for kk=1:size(ratio,1)
      kk
      direction_B=['/home/qiusb/Projects/runaba/find_superL_Ag/B_',int2str(ratio(kk,1)),'s/B_',int2str(ratio(kk,1)),'s/SUPLAT_B_',int2str(ratio(kk,1)),'s_',int2str(ratio(kk,3)),'/']
      fileFolder_B=fullfile(direction_B);
@@ -61,7 +62,7 @@ sub_name=['Ag_100';'Ag_110';'Ag_111';'Au_111';'Cu_111'];
      fileFolder_sub=fullfile(direction_sub);
      dirOutput_sub=dir(fullfile(fileFolder_sub,'*'));%get the filename in direction
       if size(dirOutput_B,1)*size(dirOutput_sub,1)==0
-          error=1
+          error=error+1
       end
      
      for ll=3:size(dirOutput_B,1)

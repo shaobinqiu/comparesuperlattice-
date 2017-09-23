@@ -52,30 +52,32 @@ sub_name=['Ag_100';'Ag_110';'Ag_111';'Au_111';'Cu_111'];
  end
  U=[];
  number=1;%the number of suitable structures
- for kk=134%:size(ratio,1)
+ for kk=301:328%size(ratio,1)
      kk
-     direction_B=['/home/qiusb/Projects/runaba/find_superL_Ag/B_',int2str(ratio(kk,1)),'s/B_',int2str(ratio(kk,1)),'s/SUPLAT_B_',int2str(ratio(kk,1)),'s_',int2str(ratio(kk,3)),'/'];
+     direction_B=['/home/qiusb/Projects/runaba/find_superL_Ag/B_',int2str(ratio(kk,1)),'s/B_',int2str(ratio(kk,1)),'s/SUPLAT_B_',int2str(ratio(kk,1)),'s_',int2str(ratio(kk,3)),'/']
      fileFolder_B=fullfile(direction_B);
      dirOutput_B=dir(fullfile(fileFolder_B,'*'));%get the filename in direction
-     sub_name(ratio(kk,2),:)
-     direction_sub=['/home/qiusb/Projects/runaba/find_superL_Ag/',sub_name(ratio(kk,2),:),'/',sub_name(ratio(kk,2),:),'/SUPLAT_',sub_name(ratio(kk,2),:),'_',int2str(ratio(kk,4)),'/']
+     direction_sub=['/home/qiusb/Projects/runaba/find_superL_Ag/',sub_name(ratio(kk,2),:),'/',sub_name(ratio(kk,2),:),'/SUPLAT_',sub_name(ratio(kk,2),:),'_',int2str(ratio(kk,4)),'/'];
      fileFolder_sub=fullfile(direction_sub);
      dirOutput_sub=dir(fullfile(fileFolder_sub,'*'));%get the filename in direction
+      if size(dirOutput_B,1)*size(dirOutput_sub,1)==0
+          error=er1
+      end
      
      for ll=3:size(dirOutput_B,1)
          message_B=import_poscar([direction_B,dirOutput_B(ll).name]);
          lattice_B=message_B.lattice;
          for pp=3:size(dirOutput_sub,1)
-             messagesub=import_poscar([direction_sub,dirOutput_sub(pp).name]);
+             message_sub=import_poscar([direction_sub,dirOutput_sub(pp).name]);
              lattice_sub=message_sub.lattice;
-             u=lattice_substrate/lattice_B;
+             u=lattice_sub/lattice_B;
              dif =u-round(u);
-             if dif(1,1)^2<deta_L  && dif(1,2)^2<deta_L  &&  dif(1,3)^2<deta_L  &&  dif(2,1)^2<deta_L  &&  dif(2,2)^2<deta_L  &&  dif(2,3)^2<deta_L  &&  dif(3,1)^2<deta_L  &&  dif(3,2)^2<deta_L  &&  dif(3,3)^2<deta_L   &&  abs((sum(u(1,:).^2))-1)<deta_L  &&  abs((sum(u(2,:).^2))-1)<deta_L  &&  abs((sum(u(3,:).^2))-1)<deta_L  ; 
+             if dif(1,1)^2<deta_L  && dif(1,2)^2<deta_L  &&  dif(1,3)^2<deta_L  &&  dif(2,1)^2<deta_L  &&  dif(2,2)^2<deta_L  &&  dif(2,3)^2<deta_L  &&  dif(3,1)^2<deta_L  &&  dif(3,2)^2<deta_L  &&  dif(3,3)^2<deta_L   &&  abs((sum(u(1,:).^2))-1)<deta_L  &&  abs((sum(u(2,:).^2))-1)<deta_L  &&  abs((sum(u(3,:).^2))-1)<deta_L  
                  U=[U;u];
-                 filedirname=['/home/qiusb/Projects/runaba/find_superL_Ag/suitablestructers/','collection_B',int2str(ratio(kk,1)),'s_',sub_name(ratio(kk,2)),'_',int2str(number)];
+                 filedirname=['/home/qiusb/Projects/runaba/find_superL_Ag/suitablestructers/','collection_B',int2str(ratio(kk,1)),'s_',sub_name(ratio(kk,2),:),'_',int2str(number)];
                  mkdir(filedirname );
                  copyfile([direction_B,dirOutput_B(ll).name],  filedirname);
-%                  copyfile([direction_sub,dirOutput_sub(pp).name], filedirname);
+                  copyfile([direction_sub,dirOutput_sub(pp).name], filedirname);
                  number=number+1;
              end
              
